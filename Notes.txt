@@ -1,0 +1,61 @@
+To use mongoose first install with "npm i mongoose"
+To use "npm init" to intialise
+use gitignore to untract some files
+Async and Await is used when an action to be done after some action is completed.(like responding after storing in DB)
+To see error when creating the data usign object we can use try catch block intially withou this the error will not be
+shown using this we can see error 
+
+SCRIPT.JS: 
+    -use variable and import mongoose using require
+    -use "mongoose.connect" for connecting along with use then keyword to show connected string and catch for any error
+    -If i want to make operations on database with mongoose i have to make some thing called schema
+    -Schema represents what are all the fields present and what tyep of data will be added to  them (data type) => genrally is made as seperate file called models
+    -After importing use a variable with new keyword of the usermodel and specify the data;
+    -To update the data to the DB use the "save()" with the variable specified ex:=> user.save()
+    -Second Method is using create function with the model schema and specifing the data there itself
+
+MODELS:
+    -importing mongoose 
+    -To use schema we import it from mongoose with "new mongoose.Schema({JSONObject})"
+    -Schema is similar to struct in c we just define the types
+    -Generate Model with the specified Schema to make operations on the databse (model has functions to perform DB operations)
+    -To use Models "mongoose.model()" is used it takes two arguments one is the name for the Schema and other is the specified Schema Ex:()=>mongoose.model('User',userSchema)
+    -Use module.exports to export the variable that contains the Model
+    -To use the model after export use require and specify the location of the js file containing model
+    -With the imported model we can find create delete the collection with specified modeltype
+    -If a object is present inside for a property of the schema we could create a seperate scehma for that and use it to tha property (Refer Address property)
+    -For making a field compolsory make the field as object and specify "required:true",lowercase:true for making lowercase (same for uppercase)
+    -Can specify default value also same as required specify object with type and "default:new Date()" use only when date is not specified or necessary
+    -If the date is to be specified and made to because new date() will only take that not when entered date to tackle this we use the following:
+            "default:()=>Date.now()" May be it still worked with new date() correctly
+    -min can be used to specify the minimum value or else will throw error same for max
+    -Can create custom validate with validate object example validate:{
+        validator:(true or false expression);
+    }
+
+MONGOOSE METHODS:
+    -WE CAN USE VALIDATOR AND REQUIRED FIELDS ONLY WHEN USING MONGOOSE FOR EXAMPLE: when using .updateMany updateone etc\
+    funcions which are mongodb methods the validator and requird pakamathan anupum to tackle this use save() 
+    -exists() method is used to retrieve only the document id
+    -User.where('name').equals('Darshan'); for finding some thing
+    -User.where('age').gt('10');
+    -User.where('name').equals('Darshan').limit(1); for displaying only one data
+    -User.where('_id').equals('66ae41e39b0a9f03fbe026b9').populate('bestFriend') to show the sub object refereing to anothe object
+        completely will show the value its refereing 
+    -userSchema.methods.sayHi = funcion(){
+        console.log("HI ${this.name}")
+    } here sayHi is a custom function for schema and this referes to the class itself from where we can access the values generate the function before usign model in models page
+    -userSchema.statics.findByName = function (name){
+    return this.where({name:name});}
+            for custom createing the function already exist
+    -userSchema.query.byName = function (name){
+    return this.where({name:name}); }//for sub function i.e chain function  can only be used with static functions 
+    -userSchema.virtual('namedEmail').get(function(){
+    return `${this.name} <${this.email}>`}) virtual properties are only available when accessed specifically but is not stored in database{ex:console.log(user.namedEmail)}
+    -userSchema.pre('save',function(next){
+    this.name = `Mr.${this.name}`;
+    next();}) for doing something just before an action is completed here its save action when the user.save() is called the inside comands will execute and next funcion is called
+    like the Mr. adds and is added to the db DB la action ku munnadi nadakraku help panu
+    -userSchema.post('save',function(doc,next){
+    doc.name = `${doc.name} modified`;
+    next();}) does something after save is done here doc is usd because after saving its saved as document to access something we use doc
